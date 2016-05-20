@@ -25,11 +25,11 @@ public class StudentResource {
 	@GET
 	@Path("dialog")
 	@Produces("application/json")
-	public Response getStudentList(@QueryParam("input") String input) {
+	public Response getStudentList(@QueryParam("text") String text, @QueryParam("userid") String id) {
 
 
         JsonObject object = new JsonObject();
-        object.addProperty("response", input);
+        object.addProperty("response", "user[" + id + "] said: " + text);
 		return Response.status(200).entity(object.toString()).build();
 	}
 }
