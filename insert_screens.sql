@@ -11,4 +11,4 @@ insert into screen (name, text)
 	('get_sorting_type','Что для тебя главное в отеле?'),
 	('no_hotels','Извини, я не знаю такого отеля.'),
 	('result','Вот самые лучшие отели, которые я нашел по твоему запросу:<hotel_details>'),
-	('get_photo','<photo>'),
+	('get_photo','<photo>');

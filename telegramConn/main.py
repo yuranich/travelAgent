@@ -22,11 +22,19 @@ def messagehandler(request, *args, **kwargs):
 	text = update.message.text.encode('utf-8')
 
 	logging.info("Received {} from {}".format(text, chat_id))
-	answer = json.loads(urlfetch.fetch(url = PLATFORM_URL.format(chat_id, text), method = "GET").content
-	answer_test = answer.get('text')
-	answer_
-	logging.info("Answering {}".format(answer))
-	if answer:
-		return Response(status_int = 200, body = json.dumps({'method': 'sendMessage', 'chat_id' : chat_id, 'text' : answe}), content_type = 'application/json')
+	try:
+		answer = json.loads(urlfetch.fetch(url = PLATFORM_URL.format(chat_id, text), method = "GET").content)
+	except:
+		return ""
+	answer_text = answer.get('response')
+	answer_buttons = answer.get('buttons')
+	logging.info("Got {}".format(answer))
+	if answer_text:
+		body = {'method': 'sendMessage', 'chat_id' : chat_id, 'text' : answer_text}
+		if answer_buttons:
+			body['reply_markup'] = {'keyboard' : [[str(button) for button in json.loads(answer_buttons)]], 'resize_keyboard' : True}
+		body = json.dumps(body)
 	else:
-		return Response(status_int = 200, body = None)
+		body = None
+	logging.info('Body is {}'.format(body))
+	return Response(status_int = 200, body = body, content_type = 'application/json')
